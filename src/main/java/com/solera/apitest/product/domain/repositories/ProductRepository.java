@@ -1,6 +1,6 @@
-package com.solera.apitest.product.domain;
+package com.solera.apitest.product.domain.repositories;
 
-import org.springframework.stereotype.Repository;
+import com.solera.apitest.product.domain.models.Product;
 
 import java.util.List;
 import java.util.Optional;

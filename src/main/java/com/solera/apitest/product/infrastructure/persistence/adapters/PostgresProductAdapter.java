@@ -1,41 +1,38 @@
 package com.solera.apitest.product.infrastructure.persistence.adapters;
 
-import com.solera.apitest.categories.domain.models.Category;
+import com.solera.apitest.product.application.mappers.ProductMapper;
 import com.solera.apitest.product.domain.models.Product;
 import com.solera.apitest.product.domain.repositories.ProductRepository;
+import com.solera.apitest.product.infrastructure.persistence.entities.ProductEntity;
+import com.solera.apitest.product.infrastructure.repositories.JpaProductRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Primary
 @RequiredArgsConstructor
-public class InMemoryProductAdapter implements ProductRepository {
+public class PostgresProductAdapter implements ProductRepository {
 
-    private final List<Product> products = new ArrayList<>(List.of(
-            new Product(1L, "Pollo", "Pollo deshuesado", 2.0, new Category(1L, "Comida", ""))
-            , new Product(2L, "Pollo", "Pollo deshuesado", 2.0, new Category(1L, "Comida", ""))
-    )
-    );
-
+    private final JpaProductRepository jpaProductRepository;
+    private final ProductMapper productMapper;
 
     @Override
     public Product save(Product product) {
-        return null;
+        ProductEntity productEntity = productMapper.toEntity(product);
+        ProductEntity savedProductEntity = jpaProductRepository.save(productEntity);
+        return productMapper.toDomain(savedProductEntity, product.getCategory());
     }
 
     @Override
     public Optional<Product> findById(Long id) {
-        return products.stream().filter(product -> product.getId().equals(id)).findFirst();
+        return Optional.empty();
     }
 
     @Override
     public List<Product> findAll() {
-        return products;
+        return List.of();
     }
 
     @Override

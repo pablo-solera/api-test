@@ -5,15 +5,15 @@ import com.solera.apitest.product.domain.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class GetAllProductsUseCase {
+public class GetProductByIdUseCase {
 
     private final ProductRepository productRepository;
 
-    public List<Product> execute(){
-        return productRepository.findAll();
+    public Optional<Product> execute(Long id){
+        return productRepository.findById(id);
     }
 }

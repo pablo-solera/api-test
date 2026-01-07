@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: api-test
+
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+  datasource:
+    url: jdbc:postgresql://postgres:5432/app_db
+    username: app_user
+    password: app_password
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+    show-sql: true
+
+server:
+  port: 8080

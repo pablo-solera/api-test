@@ -3,28 +3,30 @@ package com.solera.apitest.product.infrastructure.persistence.entities;
 import com.solera.apitest.categories.infrastructure.persistence.entities.CategoryEntity;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name = "products")
 public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(nullable = false, length = 100)
-    String name;
+    private String name;
 
     @Nullable
     @Column(length = 500)
-    String description;
+    private String description;
 
     @Column(nullable = false)
-    Double price;
+    private Double price;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
-    CategoryEntity category;
+    private CategoryEntity category;
 
 
 }

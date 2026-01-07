@@ -1,22 +1,38 @@
-# Etapa de build
+# =========================
+# Stage 1: Build
+# =========================
 FROM eclipse-temurin:17-jdk-alpine AS build
+
 WORKDIR /app
 
-# Copiar Gradle wrapper y dependencias
-COPY gradlew settings.gradle build.gradle ./
-COPY gradle ./gradle
-RUN ./gradlew build -x test --no-daemon || true
+# Copiamos solo lo necesario para cachear dependencias
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle settings.gradle ./
 
-# Copiar código fuente
-COPY src ./src
+RUN chmod +x gradlew && ./gradlew dependencies --no-daemon
 
-# Generar jar
-RUN ./gradlew bootJar -x test --no-daemon
+# Copiamos el código fuente
+COPY src src
 
-# Etapa runtime ligera
+# Construimos el jar
+RUN ./gradlew clean bootJar --no-daemon -x test
+
+# =========================
+# Stage 2: Runtime
+# =========================
 FROM eclipse-temurin:17-jre-alpine
+
+# Crear usuario no-root
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
+
 WORKDIR /app
+
+# Copiamos el jar generado
 COPY --from=build /app/build/libs/*.jar app.jar
 
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","app.jar"]
+
+# JVM optimizada para contenedores
+ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-jar", "app.jar"]

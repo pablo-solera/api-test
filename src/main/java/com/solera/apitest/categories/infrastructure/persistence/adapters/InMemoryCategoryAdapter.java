@@ -17,7 +17,8 @@ public class InMemoryCategoryAdapter implements CategoryRepository {
 
     @Override
     public Category save(Category category) {
-        return null;
+        products.add(category);
+        return category;
     }
 
     @Override
@@ -32,7 +33,7 @@ public class InMemoryCategoryAdapter implements CategoryRepository {
 
     @Override
     public void deleteById(Long id) {
-
+        products.removeIf((a) -> a.getId().equals(id));
     }
 
     @Override

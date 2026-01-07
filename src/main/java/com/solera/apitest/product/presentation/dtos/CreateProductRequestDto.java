@@ -4,6 +4,7 @@ import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import lombok.Getter;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.factory.annotation.Value;
 
 @Data
@@ -15,7 +16,7 @@ public class CreateProductRequestDto {
     private String name;
 
     @Nullable
-    @Size(min = 5, max = 500, message = "La descripción no puede superar los 1000 caracteres")
+    @Length(min = 5, max = 500, message = "La descripción no puede superar los 1000 caracteres")
     private String description;
 
     @NotNull(message = "El precio es obligatorio")

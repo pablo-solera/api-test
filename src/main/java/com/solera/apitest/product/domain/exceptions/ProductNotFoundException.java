@@ -1,7 +1,9 @@
 package com.solera.apitest.product.domain.exceptions;
 
-public class ProductNotFoundException extends RuntimeException{
+import com.solera.apitest.shared.presentation.errors.NotFoundException;
+
+public class ProductNotFoundException extends NotFoundException {
     public ProductNotFoundException(Long id){
-        super("Producto no encontrada con ID: "+ id);
+        super("Producto no encontrado con ID: "+ id);
     }
 }

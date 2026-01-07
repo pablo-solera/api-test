@@ -2,8 +2,10 @@ package com.solera.apitest.categories.infrastructure.persistence.entities;
 
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name = "categories")
 public class CategoryEntity {
 

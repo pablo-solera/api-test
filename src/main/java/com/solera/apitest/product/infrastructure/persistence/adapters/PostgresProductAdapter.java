@@ -1,8 +1,9 @@
 package com.solera.apitest.product.infrastructure.persistence.adapters;
 
-import com.solera.apitest.product.application.mappers.ProductMapper;
+import com.solera.apitest.product.application.mappers.ProductDtoMapper;
 import com.solera.apitest.product.domain.models.Product;
 import com.solera.apitest.product.domain.repositories.ProductRepository;
+import com.solera.apitest.product.infrastructure.mappers.ProductEntityMapper;
 import com.solera.apitest.product.infrastructure.persistence.entities.ProductEntity;
 import com.solera.apitest.product.infrastructure.repositories.JpaProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,18 +17,21 @@ import java.util.Optional;
 public class PostgresProductAdapter implements ProductRepository {
 
     private final JpaProductRepository jpaProductRepository;
-    private final ProductMapper productMapper;
+    private final ProductEntityMapper productEntityMapper;
 
     @Override
     public Product save(Product product) {
-        ProductEntity productEntity = productMapper.toEntity(product);
+        ProductEntity productEntity = productEntityMapper.toEntity(product);
         ProductEntity savedProductEntity = jpaProductRepository.save(productEntity);
-        return productMapper.toDomain(savedProductEntity, product.getCategory());
+        return productEntityMapper.toDomain(savedProductEntity);
     }
 
     @Override
     public Optional<Product> findById(Long id) {
-        return Optional.empty();
+        ProductEntity productEntity = jpaProductRepository.findById(id).orElseThrow();
+        Product product = productEntityMapper.toDomain(productEntity);
+
+        return Optional.of(product);
     }
 
     @Override

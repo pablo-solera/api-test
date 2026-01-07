@@ -1,6 +1,5 @@
 package com.solera.apitest.product.infrastructure.persistence.adapters;
 
-import com.solera.apitest.categories.domain.models.Category;
 import com.solera.apitest.product.domain.models.Product;
 import com.solera.apitest.product.domain.repositories.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,15 +16,18 @@ import java.util.Optional;
 public class InMemoryProductAdapter implements ProductRepository {
 
     private final List<Product> products = new ArrayList<>(List.of(
-            new Product(1L, "Pollo", "Pollo deshuesado", 2.0, new Category(1L, "Comida", ""))
-            , new Product(2L, "Pollo", "Pollo deshuesado", 2.0, new Category(1L, "Comida", ""))
+            new Product(1L, "Pollo", "Pollo deshuesado", 2.15, 1L)
+            , new Product(2L, "Carne picada", "Carne picada para hamburguesas", 3.45, 1L)
+            , new Product(3L, "Paté de pato", "Higado de pato a las finas hierbas", 6.0, 1L)
+            , new Product(4L, "Pan", "Barra de pan", 0.99, 1L)
     )
     );
 
 
     @Override
     public Product save(Product product) {
-        return null;
+        products.add(product);
+        return product;
     }
 
     @Override
@@ -45,7 +47,7 @@ public class InMemoryProductAdapter implements ProductRepository {
 
     @Override
     public void deleteById(Long id) {
-
+        products.removeIf(p -> p.getId().equals(id));
     }
 
     @Override

@@ -1,5 +1,8 @@
 package com.solera.apitest.product.presentation;
 
+import com.solera.apitest.categories.application.usecases.GetCategoryByIdUseCase;
+import com.solera.apitest.categories.domain.models.Category;
+import com.solera.apitest.product.application.mappers.ProductDtoMapper;
 import com.solera.apitest.product.application.usecases.CreateProductUseCase;
 import com.solera.apitest.product.application.usecases.GetAllProductsUseCase;
 import com.solera.apitest.product.application.usecases.GetProductByIdUseCase;
@@ -23,28 +26,49 @@ public class ProductController {
 
     private final GetAllProductsUseCase getAllProductsUseCase;
     private final GetProductByIdUseCase getProductByIdUseCase;
+    private final GetCategoryByIdUseCase getCategoryByIdUseCase;
     private final CreateProductUseCase createProductUseCase;
+    private final ProductDtoMapper productDtoMapper;
 
     @GetMapping("")
-    List<Product> getAllProducts() {
-        return getAllProductsUseCase.execute();
+    ResponseEntity<List<Product>> getAllProducts() {
+
+        List<Product> products = getAllProductsUseCase.execute();
+
+
+        return ResponseEntity.ok(products);
     }
 
     @GetMapping("{id}")
-    Optional<Product> getProductById(@PathVariable("id") Long id) {
-        return getProductByIdUseCase.execute(id);
+    ResponseEntity<ProductResponseDto> getProductById(@PathVariable("id") Long id) {
+
+        Product product = getProductByIdUseCase.execute(id);
+
+        Category category = getCategoryByIdUseCase.execute(product.getCategoryId());
+
+        ProductResponseDto response = productDtoMapper.toDto(product);
+        response = response.setCategory(category.getName());
+
+
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("")
     ResponseEntity<ProductResponseDto> createProduct(@Valid @RequestBody CreateProductRequestDto request) {
 
-        ProductResponseDto productResponseDto = createProductUseCase.execute(request);
+        Product product = createProductUseCase.execute(productDtoMapper.toDomain(request));
+
+        Category category = getCategoryByIdUseCase.execute(product.getCategoryId());
+
+        ProductResponseDto response = productDtoMapper.toDto(product);
+        response = response.setCategory(category.getName());
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(productResponseDto.id())
+                // .path("/{id}")
+                .buildAndExpand(product.getId())
                 .toUri();
 
-        return ResponseEntity.created(location).body(productResponseDto);
+        return ResponseEntity.created(location).body(response);
     }
 }

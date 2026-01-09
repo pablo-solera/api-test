@@ -1,7 +1,4 @@
 spring:
-  config:
-    activate:
-      on-profile: staging
 
   datasource:
     url: ${DB_URL}

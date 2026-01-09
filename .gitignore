@@ -4,6 +4,7 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+.env
 .env.local
 .env.production
 .env.development
@@ -38,3 +39,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Docker volumes ###
+pgadmin_data
+postgres_data

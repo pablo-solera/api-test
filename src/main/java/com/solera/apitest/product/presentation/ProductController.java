@@ -40,7 +40,7 @@ public class ProductController {
     }
 
     @GetMapping("{id}")
-    ResponseEntity<ProductResponseDto> getProductById(@PathVariable("id") Long id) {
+    ResponseEntity<ProductResponseDto> getProductById(@PathVariable Long id) {
 
         Product product = getProductByIdUseCase.execute(id);
 

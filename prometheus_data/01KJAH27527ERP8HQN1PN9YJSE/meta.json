@@ -1,0 +1,18 @@
+{
+	"ulid": "01KJAH27527ERP8HQN1PN9YJSE",
+	"minTime": 1772016652012,
+	"maxTime": 1772020800000,
+	"stats": {
+		"numSamples": 252938,
+		"numFloatSamples": 252938,
+		"numSeries": 1014,
+		"numChunks": 2053
+	},
+	"compaction": {
+		"level": 1,
+		"sources": [
+			"01KJAH27527ERP8HQN1PN9YJSE"
+		]
+	},
+	"version": 1
+}

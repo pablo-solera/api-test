@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.info.License;
 import io.swagger.v3.oas.annotations.servers.Server;
 import org.springframework.context.annotation.Configuration;
 
+@Configuration
 @OpenAPIDefinition(
         info = @Info(
                 title = "Test API",
@@ -27,6 +28,6 @@ import org.springframework.context.annotation.Configuration;
         )
 )
 
-@Configuration
+
 public class OpenApiConfig {
 }

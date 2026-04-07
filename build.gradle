@@ -3,6 +3,9 @@ plugins {
     id 'org.springframework.boot' version '4.0.1'
     id 'io.spring.dependency-management' version '1.1.7'
 }
+ext {
+    datasourceMicrometerVersion = "2.2.1"
+}
 
 group = 'com.solera'
 version = '1.0.0'
@@ -25,6 +28,16 @@ repositories {
 }
 
 dependencies {
+
+    // Json Web Token
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'net.ttddyy.observation:datasource-micrometer-spring-boot'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    // Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    testImplementation 'org.springframework.security:spring-security-test'
 
     // Swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.6'
@@ -54,6 +67,15 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    // JAXB API and Runtime (required for JPA/Hibernate in Java 11+)
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
+    runtimeOnly 'org.glassfish.jaxb:jaxb-runtime:4.0.2'
+}
+dependencyManagement {
+    imports {
+        mavenBom "net.ttddyy.observation:datasource-micrometer-bom:$datasourceMicrometerVersion"
+    }
 }
 
 tasks.named('test') {

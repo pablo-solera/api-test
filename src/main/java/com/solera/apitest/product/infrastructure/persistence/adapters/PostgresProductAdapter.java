@@ -1,5 +1,6 @@
 package com.solera.apitest.product.infrastructure.persistence.adapters;
 
+import com.solera.apitest.categories.infrastructure.persistence.entities.CategoryEntity;
 import com.solera.apitest.product.application.mappers.ProductDtoMapper;
 import com.solera.apitest.product.domain.models.Product;
 import com.solera.apitest.product.domain.repositories.ProductRepository;
@@ -7,12 +8,14 @@ import com.solera.apitest.product.infrastructure.mappers.ProductEntityMapper;
 import com.solera.apitest.product.infrastructure.persistence.entities.ProductEntity;
 import com.solera.apitest.product.infrastructure.repositories.JpaProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
+@Primary
 @RequiredArgsConstructor
 public class PostgresProductAdapter implements ProductRepository {
 
@@ -36,26 +39,34 @@ public class PostgresProductAdapter implements ProductRepository {
 
     @Override
     public List<Product> findAll() {
-        return List.of();
+        List<ProductEntity> productEntities = jpaProductRepository.findAll();
+        return productEntities.stream()
+                .map(productEntityMapper::toDomain)
+                .toList();
     }
 
     @Override
     public List<Product> findByCategoryId(Long categoryId) {
-        return List.of();
+        // TODO check if category exists
+        List<ProductEntity> productEntities = jpaProductRepository.findByCategoryId(categoryId);
+
+        return productEntities.stream()
+                .map(productEntityMapper::toDomain)
+                .toList();
     }
 
     @Override
     public void deleteById(Long id) {
-
+        jpaProductRepository.deleteById(id);
     }
 
     @Override
     public boolean existsById(Long id) {
-        return false;
+        return jpaProductRepository.existsById(id);
     }
 
     @Override
     public boolean existsByName(String name) {
-        return false;
+        return jpaProductRepository.existsByName(name);
     }
 }

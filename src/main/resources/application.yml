@@ -1,13 +1,15 @@
 spring:
+  config:
+    import: file:.env[.properties]
   security:
     jwt:
-      secret: ${JWT_SECRET:mySecretKeyForJWTTokenGeneration1234567890abcdef}
+      secret: ${JWT_SECRET}
       expiration: 3600000 # 1 hour in milliseconds
   application:
     name: java-api
 
   profiles:
-    active: ${SPRING_PROFILES_ACTIVE:dev}
+    active: ${SPRING_PROFILES_ACTIVE}
 
   jpa:
     hibernate:

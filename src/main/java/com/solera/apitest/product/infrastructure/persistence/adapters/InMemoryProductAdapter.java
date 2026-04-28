@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Primary
 @RequiredArgsConstructor
 public class InMemoryProductAdapter implements ProductRepository {
 
